@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -35,8 +36,6 @@ namespace TeacherApi.Controllers
         /// <returns>A list of existed teachers</returns>
         /// <response code="200">Success</response>
         /// <response code="500">If any server error occures</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeacherDTO>>> GetTeachers()
         {
@@ -60,10 +59,6 @@ namespace TeacherApi.Controllers
         /// <response code="400">Invalid id value</response>
         /// <response code="404">Not found</response>
         /// <response code="500">If any server error occures</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("{id}")]
         public async Task<ActionResult<TeacherDTO>> GetTeacher(long id)
         {
@@ -97,10 +92,6 @@ namespace TeacherApi.Controllers
         /// <response code="400">Invalid id value or invalid model</response>
         /// <response code="404">Not found</response>
         /// <response code="500">If any server error occures</response>
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeacher(long id, TeacherDTO teacherDTO)
         {
@@ -142,9 +133,6 @@ namespace TeacherApi.Controllers
         /// <response code="201">Returns the newly created item</response>
         /// <response code="400">If model is invalid</response>
         /// <response code="500">If any server error occures</response>
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
         public async Task<ActionResult<TeacherDTO>> PostTeacher(TeacherDTO teacherDTO)
         {
@@ -172,9 +160,6 @@ namespace TeacherApi.Controllers
         /// <response code="204">Deleted successfully</response>
         /// <response code="404">Not found</response>
         /// <response code="500">If any server error occures</response>
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeacher(long id)
         {
@@ -190,6 +175,8 @@ namespace TeacherApi.Controllers
             return NoContent();
         }
 
+        #region Helping methods
+
         /// <summary>
         /// Determines whether teacher with such id exist
         /// </summary>
@@ -199,7 +186,6 @@ namespace TeacherApi.Controllers
         {
             return _context.Teachers.Any(e => e.Id == id);
         }
-
 
         // Methods that binds Teacher-model with TeacherDTO-model
         /// <summary>
@@ -231,6 +217,7 @@ namespace TeacherApi.Controllers
             teacher.Name = teacherDTO.Name;
             teacher.Address = teacherDTO.Address;
             teacher.IsWorking = teacherDTO.IsWorking;
-        }
+        } 
+        #endregion
     }
 }
